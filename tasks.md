@@ -8,20 +8,22 @@ Datas sugeridas, no fuso America/Sao_Paulo. As sessões seguintes dependem da di
 - [x] Escrever requisitos e critérios de aceite em `spec.md`.
 - [x] Registrar decisões técnicas em `plan.md`.
 - [x] Preparar tarefas e cenários de validação.
-- [ ] Revisar a especificação com o autor antes da implementação.
+- [x] Revisar a especificação antes da implementação; execução delegada pelo autor em 08/10/2026, com o escopo inicial mantido.
 
-## Sessão 2 — sugestão: 09/10/2026 — base e interface
+## Sessão 2 — realizada: 08/10/2026 — base e interface
 
-- [ ] T01: Criar projeto React + TypeScript + Vite e lockfile. Relacionado: todos os requisitos.
-- [ ] T02: Criar grupos, cartões e estado vazio. Relacionado: RF03, RF05, RNF02.
-- [ ] T03: Criar formulário e controles de filtros com rótulos e foco visível. Relacionado: RF01, RF02, RF05, RNF01.
-- [ ] T04: Conferir a interface em 360 px e 1280 px. Relacionado: RNF02.
+- [x] T01: Criar projeto React + TypeScript + Vite e lockfile. Relacionado: todos os requisitos.
+- [x] T02: Criar grupos, cartões e estado vazio. Relacionado: RF03, RF05, RNF02.
+- [x] T03: Criar formulário e controles de filtros com rótulos e foco visível. Relacionado: RF01, RF02, RF05, RNF01.
+- [x] T04: Conferir a interface em 360 px e 1280 px. Relacionado: RNF02.
+
+Também foram conectados os filtros e a criação em memória para experimentar a interface. A demonstração informa que os dados reiniciam ao recarregar. O formulário de edição será acrescentado na sessão 3.
 
 ## Sessão 3 — sugestão: 13/10/2026 — funcionalidades
 
-- [ ] T05: Implementar criação, validação e edição. Relacionado: RF01, RF02.
+- [ ] T05: Completar criação, validação e edição. Criação em memória já disponível; edição e testes completos pendentes. Relacionado: RF01, RF02.
 - [ ] T06: Implementar mudança de estado e exclusão com confirmação. Relacionado: RF03, RF04.
-- [ ] T07: Aplicar filtros combinados e ordenação. Relacionado: RF05.
+- [x] T07: Aplicar filtros combinados e ordenação. Antecipado na sessão 2. Relacionado: RF05.
 - [ ] T08: Implementar armazenamento, restauração e tratamento de falhas. Relacionado: RF06.
 - [ ] T09: Testar regras dos campos e dados armazenados inválidos. Relacionado: RF01, RF02, RF06.
 

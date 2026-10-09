@@ -1,10 +1,14 @@
 # Taskboard SDD
 
-Quadro de tarefas pessoais, planejado como uma aplicação frontend em React, TypeScript e Vite.
+Quadro de tarefas pessoais em React, TypeScript e Vite, desenvolvido em etapas usando SDD.
 
 ## Estado atual
 
-Etapa 1: especificação e planejamento registrados em 07/10/2026. A aplicação ainda será implementada nas próximas sessões.
+Etapa 2, realizada em **08/10/2026**: base React, interface responsiva, filtros e criação de tarefas em memória. A aplicação inicia com exemplos para facilitar a revisão visual.
+
+**Demonstração:** as tarefas reiniciam ao atualizar a página. Edição, mudança de estado, exclusão e persistência estão planejadas para a próxima sessão.
+
+![Interface do quadro em desktop](preview-desktop.jpg)
 
 ## Objetivo
 
@@ -38,4 +42,28 @@ Uso individual, sem login ou backend. Os dados ficam no navegador e não são si
 
 ## Execução
 
-As instruções de instalação e execução serão acrescentadas após a criação do projeto React. Neste momento, o repositório contém a documentação inicial.
+Pré-requisito: Node.js 20.19+ da linha 20, ou Node.js 22.12+; npm.
+
+```sh
+npm ci
+npm run dev
+```
+
+Abra o endereço local informado pelo Vite. Para verificar tipos e gerar a versão de produção:
+
+```sh
+npm run check
+npm run build
+npm run preview
+```
+
+Use `npm run format` para formatar os arquivos de código com Prettier.
+
+## O que já funciona
+
+- Quadro em três estados, com prioridade e prazo identificados por texto.
+- Filtros de estado e prioridade combinados, com mensagem para resultados vazios.
+- Criação em A fazer, validação do título e cancelamento do formulário.
+- Layout para celular e desktop, foco visível, rótulos e fechamento por Escape.
+
+Consulte `validation.md` para os resultados verificados e as verificações pendentes. Ainda não há suíte de testes automatizados nem comando de lint.

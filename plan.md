@@ -1,6 +1,6 @@
 # Plano técnico
 
-Estado: planejamento inicial, anterior à implementação.
+Estado: implementação da interface iniciada em 08/10/2026. Os requisitos de edição, mudança de estado, exclusão e persistência continuam planejados.
 
 ## Decisões
 
@@ -14,26 +14,27 @@ Estado: planejamento inicial, anterior à implementação.
 
 As versões das dependências serão escolhidas ao iniciar a implementação e registradas no lockfile.
 
-## Estrutura prevista
+## Estrutura inicial
 
 ```text
 src/
   App.tsx
-  components/
-    TaskBoard.tsx
-    TaskCard.tsx
-    TaskForm.tsx
-    TaskFilters.tsx
-  hooks/
-    useTasks.ts
-  domain/
-    task.ts
-  services/
-    taskStorage.ts
+  TaskBoard.tsx
+  TaskForm.tsx
+  task.ts
+  main.tsx
   styles.css
 ```
 
-Adaptar a estrutura se uma separação não trouxer clareza; evitar arquivos e abstrações sem uso.
+Como a aplicação ainda tem poucos arquivos, a estrutura começa plana: o quadro reúne os cartões, e os filtros ficam em `App.tsx`. Extrair hook e serviço de armazenamento quando a persistência for implementada; criar pastas conforme a estrutura crescer.
+
+## Decisões da sessão 2
+
+- Criação em memória e filtros foram conectados para revisar o comportamento da interface. Os exemplos são temporários e serão retirados da inicialização da versão com persistência.
+- O formulário usa o elemento nativo `dialog`, com foco inicial no título, Escape e retorno do foco ao botão de abertura.
+- O prazo é lido como `YYYY-MM-DD` pelo formulário e exibido como data local, preservando o dia escolhido.
+- A demonstração informa que os dados serão reiniciados ao recarregar. Isso registra explicitamente a limitação anterior à implementação de RF06.
+- Dependências com versões exatas e `package-lock.json`; `npm run check` verifica tipos, e `npm run build` verifica tipos antes do build.
 
 ## Modelo e armazenamento
 
