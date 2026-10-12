@@ -1,5 +1,12 @@
 import { priorityLabels, statuses, statusLabels } from "./task";
-import type { Task } from "./task";
+import type { Task, TaskStatus } from "./task";
+
+interface TaskActions {
+  actionsDisabled?: boolean;
+  onEdit: (task: Task, trigger: HTMLButtonElement) => void;
+  onDelete: (task: Task, trigger: HTMLButtonElement) => void;
+  onChangeStatus: (task: Task, status: TaskStatus) => void;
+}
 
 function formatDueDate(value: string) {
   const [year, month, day] = value.split("-").map(Number);
@@ -9,7 +16,13 @@ function formatDueDate(value: string) {
   }).format(new Date(year, month - 1, day));
 }
 
-function TaskCard({ task }: { task: Task }) {
+function TaskCard({
+  task,
+  onEdit,
+  onDelete,
+  onChangeStatus,
+  actionsDisabled,
+}: { task: Task } & TaskActions) {
   return (
     <article
       className={`task-card task-card--${task.status}`}
@@ -52,6 +65,44 @@ function TaskCard({ task }: { task: Task }) {
         )}
         <span>{statusLabels[task.status]}</span>
       </div>
+      <div className="card-actions">
+        <div className="card-state">
+          <label className="sr-only" htmlFor={`status-${task.id}`}>
+            Estado de {task.title}
+          </label>
+          <select
+            disabled={actionsDisabled}
+            id={`status-${task.id}`}
+            value={task.status}
+            onChange={(event) =>
+              onChangeStatus(task, event.target.value as TaskStatus)
+            }
+          >
+            {statuses.map((status) => (
+              <option key={status} value={status}>
+                {statusLabels[status]}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="card-buttons">
+          <button
+            disabled={actionsDisabled}
+            onClick={(event) => onEdit(task, event.currentTarget)}
+            aria-label={`Editar ${task.title}`}
+          >
+            Editar
+          </button>
+          <button
+            disabled={actionsDisabled}
+            className="delete-action"
+            onClick={(event) => onDelete(task, event.currentTarget)}
+            aria-label={`Excluir ${task.title}`}
+          >
+            Excluir
+          </button>
+        </div>
+      </div>
     </article>
   );
 }
@@ -60,11 +111,15 @@ export default function TaskBoard({
   tasks,
   filtered,
   onReset,
+  onEdit,
+  onDelete,
+  onChangeStatus,
+  actionsDisabled,
 }: {
   tasks: Task[];
   filtered: boolean;
   onReset: () => void;
-}) {
+} & TaskActions) {
   return (
     <>
       {tasks.length === 0 && (
@@ -118,7 +173,14 @@ export default function TaskBoard({
               </p>
               <div className="task-list">
                 {columnTasks.map((task) => (
-                  <TaskCard key={task.id} task={task} />
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    onChangeStatus={onChangeStatus}
+                    actionsDisabled={actionsDisabled}
+                  />
                 ))}
                 {columnTasks.length === 0 && (
                   <p className="empty-column">Nenhuma tarefa nesta etapa.</p>

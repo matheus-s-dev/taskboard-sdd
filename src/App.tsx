@@ -1,14 +1,30 @@
 import { useRef, useState } from "react";
 import TaskBoard from "./TaskBoard";
 import TaskForm from "./TaskForm";
-import { exampleTasks, priorityLabels, statuses, statusLabels } from "./task";
+import ConfirmDialog from "./ConfirmDialog";
+import useTasks from "./useTasks";
+import { priorityLabels, statuses, statusLabels } from "./task";
 import type { Priority, Task, TaskDraft, TaskStatus } from "./task";
 
 export default function App() {
-  const [tasks, setTasks] = useState<Task[]>(exampleTasks);
+  const {
+    tasks,
+    storageState,
+    create,
+    update,
+    changeStatus,
+    remove,
+    resetInvalidStorage,
+    retrySave,
+  } = useTasks();
   const [status, setStatus] = useState<TaskStatus | "all">("all");
   const [priority, setPriority] = useState<Priority | "all">("all");
   const [formOpen, setFormOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [deletingTask, setDeletingTask] = useState<Task | null>(null);
+  const [resetOpen, setResetOpen] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
+  const returnFocusRef = useRef<HTMLElement | null>(null);
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const filtered = status !== "all" || priority !== "all";
   const visibleTasks = tasks
@@ -24,17 +40,42 @@ export default function App() {
     setPriority("all");
   }
 
-  function createTask(draft: TaskDraft) {
-    setTasks((previous) => [
-      {
-        ...draft,
-        id: crypto.randomUUID(),
-        status: "todo",
-        createdAt: new Date().toISOString(),
-      },
-      ...previous,
-    ]);
-    resetFilters();
+  function restoreFocus() {
+    requestAnimationFrame(() => {
+      const target = returnFocusRef.current;
+      if (target?.isConnected) target.focus();
+      else addButtonRef.current?.focus();
+    });
+  }
+
+  function openCreate() {
+    returnFocusRef.current = addButtonRef.current;
+    setEditingTask(null);
+    setFormOpen(true);
+  }
+
+  function saveTask(draft: TaskDraft) {
+    const accepted = editingTask
+      ? update(editingTask.id, draft)
+      : create(draft);
+    if (accepted) {
+      setAnnouncement(
+        editingTask ? "Tarefa atualizada." : "Tarefa criada em A fazer.",
+      );
+      if (!editingTask) resetFilters();
+    }
+    return accepted;
+  }
+
+  function moveTask(task: Task, nextStatus: TaskStatus) {
+    if (changeStatus(task.id, nextStatus)) {
+      setAnnouncement(`${task.title}: ${statusLabels[nextStatus]}.`);
+      requestAnimationFrame(() => {
+        const control = document.getElementById(`status-${task.id}`);
+        if (control) control.focus();
+        else addButtonRef.current?.focus();
+      });
+    }
   }
 
   return (
@@ -113,21 +154,67 @@ export default function App() {
             <button
               ref={addButtonRef}
               className="primary-button new-task"
-              onClick={() => setFormOpen(true)}
+              onClick={openCreate}
+              disabled={storageState === "invalid"}
             >
               <span aria-hidden="true">＋</span> Nova tarefa
             </button>
           </div>
 
-          <div className="demo-notice">
+          <div
+            className={`demo-notice storage-notice storage-notice--${storageState}`}
+            role={storageState === "saved" ? "status" : "alert"}
+          >
             <span className="demo-symbol" aria-hidden="true">
               i
             </span>
             <p>
-              <strong>Um espaço para experimentar.</strong> Os exemplos e as
-              novas tarefas reiniciam ao atualizar a página.
+              {storageState === "saved" ? (
+                <>
+                  <strong>Seu quadro fica aqui.</strong> As tarefas são salvas
+                  neste navegador e continuam após atualizar a página.
+                </>
+              ) : storageState === "invalid" ? (
+                <>
+                  <strong>Não foi possível ler as tarefas salvas.</strong> Os
+                  dados existentes foram preservados. Para começar novamente,
+                  confirme a criação de uma lista vazia.
+                </>
+              ) : (
+                <>
+                  <strong>As alterações estão apenas nesta sessão.</strong> Não
+                  foi possível acessar ou gravar no armazenamento deste
+                  navegador. As mudanças podem se perder ao atualizar ou fechar
+                  a página.
+                </>
+              )}
             </p>
-            <span className="demo-pill">DEMONSTRAÇÃO</span>
+            {storageState === "invalid" ? (
+              <button
+                className="text-button"
+                onClick={(event) => {
+                  returnFocusRef.current = event.currentTarget;
+                  setResetOpen(true);
+                }}
+              >
+                Iniciar lista vazia
+              </button>
+            ) : storageState !== "saved" ? (
+              <button
+                className="text-button"
+                onClick={() => {
+                  if (retrySave())
+                    setAnnouncement("Tarefas salvas neste navegador.");
+                }}
+              >
+                Tentar salvar novamente
+              </button>
+            ) : (
+              <span className="demo-pill">SALVAMENTO LOCAL</span>
+            )}
+          </div>
+          <div className="sr-only" role="status" aria-live="polite">
+            {announcement}
           </div>
 
           <section className="filterbar" aria-label="Filtrar tarefas">
@@ -178,9 +265,20 @@ export default function App() {
           </section>
 
           <TaskBoard
+            actionsDisabled={storageState === "invalid"}
             tasks={visibleTasks}
             filtered={filtered}
             onReset={resetFilters}
+            onEdit={(task, trigger) => {
+              returnFocusRef.current = trigger;
+              setEditingTask(task);
+              setFormOpen(true);
+            }}
+            onDelete={(task, trigger) => {
+              returnFocusRef.current = trigger;
+              setDeletingTask(task);
+            }}
+            onChangeStatus={moveTask}
           />
           <footer className="board-footer">
             <span>
@@ -193,12 +291,49 @@ export default function App() {
       </div>
       {formOpen && (
         <TaskForm
-          onSave={createTask}
+          task={editingTask}
+          onSave={saveTask}
           onClose={() => {
             setFormOpen(false);
-            addButtonRef.current?.focus();
+            restoreFocus();
           }}
         />
+      )}
+      {deletingTask && (
+        <ConfirmDialog
+          title="Excluir tarefa?"
+          confirmLabel="Excluir tarefa"
+          onConfirm={() => {
+            if (remove(deletingTask.id)) setAnnouncement("Tarefa excluída.");
+          }}
+          onClose={() => {
+            setDeletingTask(null);
+            restoreFocus();
+          }}
+        >
+          A tarefa <strong>“{deletingTask.title}”</strong> será removida deste
+          navegador. Deseja continuar?
+        </ConfirmDialog>
+      )}
+      {resetOpen && (
+        <ConfirmDialog
+          title="Começar uma lista vazia?"
+          confirmLabel="Substituir por lista vazia"
+          onConfirm={() => {
+            resetInvalidStorage();
+            resetFilters();
+            setAnnouncement("Lista vazia iniciada.");
+          }}
+          onClose={() => {
+            setResetOpen(false);
+            restoreFocus();
+          }}
+        >
+          Os dados salvos que não puderam ser lidos serão substituídos por uma
+          lista vazia. Confirme somente se deseja descartar esses dados e
+          começar novamente. As tarefas criadas nesta sessão também serão
+          descartadas.
+        </ConfirmDialog>
       )}
     </div>
   );

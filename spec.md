@@ -1,6 +1,6 @@
 # Especificação — quadro de tarefas pessoais
 
-Versão: 0.1 — 07/10/2026. Base inicial para revisão durante a próxima sessão.
+Versão: 0.2 — 12/10/2026. Escopo inicial de 07/10 mantido; comportamento em falhas de leitura esclarecido na sessão 3.
 
 ## Problema e objetivo
 
@@ -61,6 +61,8 @@ Uma página em português com três estados: **A fazer**, **Em andamento** e **C
 - Os filtros são reiniciados em Todos ao recarregar.
 - Se o armazenamento falhar, a aplicação continua funcionando na sessão e informa que as mudanças podem ser perdidas ao fechar ou recarregar.
 - Dados armazenados inválidos não causam tela em branco. A aplicação informa o problema e oferece iniciar uma lista vazia, exigindo confirmação antes de substituir os dados armazenados.
+- Enquanto dados inválidos aguardam essa decisão, alterações ficam bloqueadas para preservar o conteúdo existente.
+- Se a leitura estiver temporariamente indisponível, tarefas novas podem ser organizadas em memória. Ao recuperar o acesso, a aplicação lê e preserva as tarefas anteriores antes de salvar as tarefas dessa sessão.
 
 ### RNF01 — Usabilidade e acessibilidade
 

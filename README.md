@@ -4,9 +4,9 @@ Quadro de tarefas pessoais em React, TypeScript e Vite, desenvolvido em etapas u
 
 ## Estado atual
 
-Etapa 2, realizada em **08/10/2026**: base React, interface responsiva, filtros e criação de tarefas em memória. A aplicação inicia com exemplos para facilitar a revisão visual.
+Etapa 3, realizada em **12/10/2026**: criação, edição, mudança de estado, exclusão com confirmação e salvamento das tarefas no navegador.
 
-**Demonstração:** as tarefas reiniciam ao atualizar a página. Edição, mudança de estado, exclusão e persistência estão planejadas para a próxima sessão.
+Na primeira execução, o quadro começa vazio. As tarefas permanecem após atualizar a página, no mesmo navegador e endereço. A imagem abaixo usa tarefas criadas para a validação; elas não são adicionadas automaticamente à aplicação.
 
 ![Interface do quadro em desktop](preview-desktop.jpg)
 
@@ -14,7 +14,7 @@ Etapa 2, realizada em **08/10/2026**: base React, interface responsiva, filtros 
 
 Praticar Spec-Driven Development (SDD): definir o comportamento esperado, planejar a solução, dividir a implementação em tarefas e validar o resultado contra critérios de aceite.
 
-O usuário poderá criar, editar, excluir, organizar e filtrar tarefas. Os dados serão armazenados no navegador usando `localStorage`.
+O usuário pode criar, editar, excluir, organizar e filtrar tarefas. Os dados são armazenados no navegador usando `localStorage`.
 
 ## Documentos
 
@@ -53,6 +53,7 @@ Abra o endereço local informado pelo Vite. Para verificar tipos e gerar a vers�
 
 ```sh
 npm run check
+npm test
 npm run build
 npm run preview
 ```
@@ -64,6 +65,16 @@ Use `npm run format` para formatar os arquivos de código com Prettier.
 - Quadro em três estados, com prioridade e prazo identificados por texto.
 - Filtros de estado e prioridade combinados, com mensagem para resultados vazios.
 - Criação em A fazer, validação do título e cancelamento do formulário.
+- Edição preservando o identificador, o estado e a data de criação.
+- Mudança para qualquer um dos três estados e exclusão com confirmação.
+- Restauração das tarefas após recarregar, com filtros reiniciados em Todos.
+- Avisos para falhas de armazenamento; dados inválidos são preservados até a confirmação para substituí-los.
 - Layout para celular e desktop, foco visível, rótulos e fechamento por Escape.
 
-Consulte `validation.md` para os resultados verificados e as verificações pendentes. Ainda não há suíte de testes automatizados nem comando de lint.
+Consulte `validation.md` para os resultados verificados e as verificações pendentes. `npm test` executa testes de regras, armazenamento, recuperação de falhas e apresentação dos avisos. O lint ainda não está configurado.
+
+## Armazenamento
+
+O aplicativo usa a chave `taskboard-sdd:tasks:v1` e um documento com versão e lista de tarefas. Verifica a estrutura, os campos, as datas e os identificadores antes de restaurar os dados.
+
+Se uma gravação falhar, as alterações continuam disponíveis na sessão e aparece um aviso com a opção de tentar novamente. Se a leitura falhar temporariamente, as tarefas anteriores são recuperadas antes de gravar as tarefas criadas na sessão. Dados inválidos exigem confirmação explícita antes de começar uma lista vazia.

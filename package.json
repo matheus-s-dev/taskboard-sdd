@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "check": "tsc --noEmit",
+    "test": "tsx --test tests/task.test.ts tests/taskStorage.test.ts tests/taskRecovery.test.ts tests/presentation.test.ts tests/useTasks.test.ts",
     "format": "prettier --write src index.html vite.config.ts tsconfig.json",
     "build": "npm run check && vite build",
     "preview": "vite preview --host 127.0.0.1"
@@ -22,6 +23,7 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
     "prettier": "3.9.9",
+    "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vite": "8.3.4"
   }

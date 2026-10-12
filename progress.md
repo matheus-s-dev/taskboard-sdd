@@ -23,6 +23,20 @@ Próximo passo: revisar a especificação com o autor e iniciar T01–T04 na ses
 
 Próximo passo: completar edição, mudança de estado e exclusão; implementar `localStorage` e seus casos de falha. As datas da próxima sessão continuam sendo sugestões.
 
+## 12/10/2026 — sessão 3: funcionalidades e persistência
+
+- Implementadas edição, mudança entre os três estados e exclusão com confirmação que identifica a tarefa.
+- Centralizadas as regras dos campos, a normalização do título e as operações imutáveis, preservando os metadados nas edições.
+- Implementados armazenamento com versão, restauração das tarefas, avisos de falha e confirmação antes de substituir dados inválidos.
+- Esclarecido em `spec.md` o comportamento em falhas temporárias de leitura: recuperar e preservar dados anteriores antes de gravar tarefas novas da sessão.
+- Removidos os exemplos da inicialização. O quadro começa vazio quando não há dados salvos.
+- Conferidos na prévia local isolada criação, limites, data parcial, edição e cancelamento, mudança de estado, exclusão, filtros, ordenação e persistência após recarregar.
+- Preservadas as tarefas da prévia principal; os testes de navegador usaram uma origem local separada e tarefas criadas para validação.
+- Conferido o layout em 360 e 1280 px, incluindo um título de 100 caracteres. Atualizada a imagem do README.
+- Executados build com TypeScript e 63 testes de domínio, armazenamento, recuperação, apresentação dos avisos e callbacks do hook, todos aprovados.
+
+Próximo passo: sessão 4 para revisão final de acessibilidade, conferência dos avisos no navegador, eventuais correções e preparação da explicação do projeto e do uso de SDD.
+
 ## Modelo para as próximas sessões
 
 ```text

@@ -1,6 +1,6 @@
 # Plano técnico
 
-Estado: implementação da interface iniciada em 08/10/2026. Os requisitos de edição, mudança de estado, exclusão e persistência continuam planejados.
+Estado: funcionalidades da sessão 3 implementadas em 12/10/2026. A sessão 4 fica dedicada à revisão final, correções e apresentação.
 
 ## Decisões
 
@@ -21,12 +21,16 @@ src/
   App.tsx
   TaskBoard.tsx
   TaskForm.tsx
+  ConfirmDialog.tsx
   task.ts
+  taskStorage.ts
+  taskRecovery.ts
+  useTasks.ts
   main.tsx
   styles.css
 ```
 
-Como a aplicação ainda tem poucos arquivos, a estrutura começa plana: o quadro reúne os cartões, e os filtros ficam em `App.tsx`. Extrair hook e serviço de armazenamento quando a persistência for implementada; criar pastas conforme a estrutura crescer.
+Como a aplicação ainda tem poucos arquivos, a estrutura permanece plana: o quadro reúne os cartões, os filtros ficam em `App.tsx`, e regras e armazenamento estão separados do hook de interação.
 
 ## Decisões da sessão 2
 
@@ -41,6 +45,17 @@ Como a aplicação ainda tem poucos arquivos, a estrutura começa plana: o quadr
 Representar estado e prioridade com valores tipados. Guardar prazo como `YYYY-MM-DD`, sem conversão de fuso horário. Usar um identificador único por tarefa e preservar a criação ao editar.
 
 Centralizar a validação dos campos. A leitura do armazenamento deve verificar o JSON, a versão e os tipos dos dados antes de usá-los. Tratar falhas de leitura e escrita com mensagens visíveis. Não substituir automaticamente dados inválidos encontrados na inicialização.
+
+## Decisões da sessão 3
+
+- `task.ts` concentra validação e operações imutáveis; a edição preserva identificador, estado, criação e ordenação.
+- `taskStorage.ts` lê e grava o envelope `{ version: 1, tasks }`. A leitura nunca escreve; estruturas, datas ou identificadores inválidos são rejeitados.
+- `useTasks.ts` atualiza a sessão e tenta persistir em cada operação. Um ref preserva ações consecutivas antes do próximo render; não há gravação na inicialização do StrictMode.
+- `taskRecovery.ts` recupera uma leitura inicialmente indisponível antes de autorizar gravações. Tarefas anteriores e tarefas da sessão são preservadas.
+- Dados inválidos bloqueiam alterações e só podem ser substituídos pela confirmação de iniciar uma lista vazia.
+- O mesmo formulário atende criação e edição. Limites apresentam mensagens por campo e preservam o preenchimento; datas parcialmente digitadas são rejeitadas.
+- Confirmações começam com foco em Cancelar. Fechar devolve o foco ao controle de origem ou ao botão Nova tarefa quando o cartão já não existe.
+- `npm test` usa `tsx` e o test runner do Node para validar regras, armazenamento, recuperação e avisos da interface, sem serviços externos.
 
 ## Sequência
 

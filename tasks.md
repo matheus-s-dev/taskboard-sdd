@@ -17,22 +17,22 @@ Datas sugeridas, no fuso America/Sao_Paulo. As sessões seguintes dependem da di
 - [x] T03: Criar formulário e controles de filtros com rótulos e foco visível. Relacionado: RF01, RF02, RF05, RNF01.
 - [x] T04: Conferir a interface em 360 px e 1280 px. Relacionado: RNF02.
 
-Também foram conectados os filtros e a criação em memória para experimentar a interface. A demonstração informa que os dados reiniciam ao recarregar. O formulário de edição será acrescentado na sessão 3.
+Na sessão 2 foram conectados os filtros e a criação em memória para experimentar a interface. Essa demonstração ainda reiniciava ao recarregar; edição e persistência foram acrescentadas na sessão 3.
 
-## Sessão 3 — sugestão: 13/10/2026 — funcionalidades
+## Sessão 3 — realizada: 12/10/2026 — funcionalidades
 
-- [ ] T05: Completar criação, validação e edição. Criação em memória já disponível; edição e testes completos pendentes. Relacionado: RF01, RF02.
-- [ ] T06: Implementar mudança de estado e exclusão com confirmação. Relacionado: RF03, RF04.
+- [x] T05: Completar criação, validação e edição. Relacionado: RF01, RF02.
+- [x] T06: Implementar mudança de estado e exclusão com confirmação. Relacionado: RF03, RF04.
 - [x] T07: Aplicar filtros combinados e ordenação. Antecipado na sessão 2. Relacionado: RF05.
-- [ ] T08: Implementar armazenamento, restauração e tratamento de falhas. Relacionado: RF06.
-- [ ] T09: Testar regras dos campos e dados armazenados inválidos. Relacionado: RF01, RF02, RF06.
+- [x] T08: Implementar armazenamento, restauração e tratamento de falhas. Relacionado: RF06.
+- [x] T09: Testar regras dos campos e dados armazenados inválidos. Relacionado: RF01, RF02, RF06.
 
 ## Sessão 4 — sugestão: 15/10/2026 — validação e entrega
 
 - [ ] T10: Executar os cenários de `validation.md` e registrar evidências. Relacionado: todos os requisitos.
 - [ ] T11: Corrigir falhas encontradas e executar novamente os cenários afetados.
 - [ ] T12: Executar build e lint; registrar comandos e resultados reais.
-- [ ] T13: Completar README com instalação, execução e imagens da aplicação.
+- [x] T13: Completar README com instalação, execução e imagens da aplicação. Antecipado e atualizado na sessão 3.
 - [ ] T14: Revisar consistência entre especificação, código e documentação.
 - [ ] T15: Preparar explicação do uso de SDD e link do repositório para apresentação.
 
