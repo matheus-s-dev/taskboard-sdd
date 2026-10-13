@@ -37,6 +37,20 @@ Próximo passo: completar edição, mudança de estado e exclusão; implementar 
 
 Próximo passo: sessão 4 para revisão final de acessibilidade, conferência dos avisos no navegador, eventuais correções e preparação da explicação do projeto e do uso de SDD.
 
+## 13/10/2026 — sessão 4: revisão e apresentação
+
+- Executados novamente `npm test` com 63 testes aprovados, `npm run build` com checagem TypeScript e `npm run lint` sem erros ou avisos.
+- Configurado ESLint com regras recomendadas de JavaScript, TypeScript, React Hooks e JSX accessibility, sem desativar regras. TypeScript ajustado para 6.0 por compatibilidade com `typescript-eslint`; registrada a limitação de suporte da linha ESLint 9 mantida pela compatibilidade dos plugins.
+- Corrigido o foco ao limpar filtros nos dois botões: agora retorna ao controle Estado. Após retry bem-sucedido, segue para Nova tarefa; quando a recuperação descobre dados inválidos, segue para Iniciar lista vazia, com alterações bloqueadas.
+- Conferido no Chrome o percurso completo por teclado com Tab, Shift+Tab, Enter, setas e Escape: criação, rejeição de título só com espaços, cancelamento, edição, mudança de estado, filtros combinados, limpeza, exclusão cancelada/confirmada e retornos do foco.
+- Criada `tests/browser/`, página de desenvolvimento que substitui o armazenamento apenas por uma simulação em memória, sem acessar os dados reais do navegador. A aplicação de produção mantém sua entrada principal.
+- Conferidos os cenários simulados em uma prévia separada na porta 5175: JSON inválido bloqueia criação; cancelar mantém o conteúdo com zero gravações; confirmar substitui por lista vazia com uma gravação.
+- Conferida falha de leitura: criação na sessão não grava; liberar leitura e tentar novamente preserva a tarefa antiga e a nova com uma gravação. Conferida falha de escrita: dados antigos persistidos permanecem intactos, a mudança fica em memória e o retry grava as duas tarefas.
+- Conferida recuperação que descobre JSON inválido ao mover uma tarefa: os controles ficam bloqueados e o foco segue para a ação de recuperação.
+- Preparado `presentation.md` com roteiro de demonstração, explicação do SDD, perguntas prováveis e participação real do autor e da IA. Atualizados README e plano técnico com os comandos e as decisões da revisão.
+
+Os resultados e as evidências desta sessão estão em `validation.md`. O guia está pronto para o autor estudar e ensaiar a apresentação ao gestor.
+
 ## Modelo para as próximas sessões
 
 ```text

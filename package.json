@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "check": "tsc --noEmit",
+    "lint": "eslint src tests eslint.config.js --max-warnings=0",
     "test": "tsx --test tests/task.test.ts tests/taskStorage.test.ts tests/taskRecovery.test.ts tests/presentation.test.ts tests/useTasks.test.ts",
-    "format": "prettier --write src index.html vite.config.ts tsconfig.json",
+    "format": "prettier --write src tests index.html vite.config.ts tsconfig.json eslint.config.js",
     "build": "npm run check && vite build",
     "preview": "vite preview --host 127.0.0.1"
   },
@@ -19,12 +20,18 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@eslint/js": "9.39.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
+    "eslint": "9.39.5",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
     "prettier": "3.9.9",
     "tsx": "4.23.15",
-    "typescript": "7.0.2",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2",
     "vite": "8.3.4"
   }
 }

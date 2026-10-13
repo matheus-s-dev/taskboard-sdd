@@ -1,6 +1,6 @@
 # Plano técnico
 
-Estado: funcionalidades da sessão 3 implementadas em 12/10/2026. A sessão 4 fica dedicada à revisão final, correções e apresentação.
+Estado: funcionalidades implementadas em 12/10/2026; revisão de teclado, falhas de armazenamento, lint e preparação da apresentação realizadas na sessão 4, em 13/10/2026. Resultados detalhados em `validation.md`.
 
 ## Decisões
 
@@ -12,9 +12,9 @@ Estado: funcionalidades da sessão 3 implementadas em 12/10/2026. A sessão 4 fi
 - Controle de estado por seleção ou botões, mantendo o fluxo acessível por teclado.
 - Nenhum serviço externo ou segredo necessário para executar o produto.
 
-As versões das dependências serão escolhidas ao iniciar a implementação e registradas no lockfile.
+As versões das dependências estão fixadas no `package-lock.json`.
 
-## Estrutura inicial
+## Estrutura
 
 ```text
 src/
@@ -28,6 +28,12 @@ src/
   useTasks.ts
   main.tsx
   styles.css
+tests/
+  *.test.ts
+  browser/
+    index.html
+    main.tsx
+eslint.config.js
 ```
 
 Como a aplicação ainda tem poucos arquivos, a estrutura permanece plana: o quadro reúne os cartões, os filtros ficam em `App.tsx`, e regras e armazenamento estão separados do hook de interação.
@@ -57,6 +63,15 @@ Centralizar a validação dos campos. A leitura do armazenamento deve verificar 
 - Confirmações começam com foco em Cancelar. Fechar devolve o foco ao controle de origem ou ao botão Nova tarefa quando o cartão já não existe.
 - `npm test` usa `tsx` e o test runner do Node para validar regras, armazenamento, recuperação e avisos da interface, sem serviços externos.
 
+## Decisões da sessão 4
+
+- Ao limpar filtros, o foco volta ao controle Estado, porque o botão Limpar filtros deixa de existir. Isso vale para os controles da barra e do resultado vazio.
+- Após uma tentativa bem-sucedida de salvar, o foco segue para Nova tarefa. Se a recuperação descobrir dados inválidos, os controles de alteração ficam bloqueados e o foco segue para Iniciar lista vazia.
+- `tests/browser/` oferece uma página de validação em desenvolvimento com armazenamento simulado. Ela permite conferir falhas de leitura, gravação e dados inválidos sem acessar os dados reais do navegador. O build de produção usa apenas a entrada principal da aplicação.
+- ESLint aplica as configurações recomendadas de JavaScript, TypeScript, React Hooks e JSX accessibility. Nenhuma regra foi desativada; `npm run lint` exige zero avisos.
+- TypeScript foi ajustado de 7.0 para 6.0 para atender aos peer dependencies de `typescript-eslint`. ESLint 9 foi escolhido pela compatibilidade com o plugin JSX accessibility. A instalação avisa que a linha 9 está fora de suporte; futuras atualizações devem considerar os plugins em conjunto.
+- `presentation.md` explica o método, a demonstração e a participação do autor e do Codex.
+
 ## Sequência
 
 1. Revisar `spec.md` e seus cenários de aceite.
@@ -66,9 +81,11 @@ Centralizar a validação dos campos. A leitura do armazenamento deve verificar 
 5. Validar comportamento, teclado, responsividade e build.
 6. Atualizar README e histórico com os resultados reais.
 
-## Validação prevista
+## Validação
 
-Executar os cenários de `validation.md`. Na implementação, acrescentar testes automatizados para regras de validação e leitura de armazenamento inválido, pois esses casos podem causar perda de dados ou falha na inicialização. Verificar a integração pelo navegador e executar os comandos de build e lint disponíveis no projeto.
+Os cenários de `validation.md` ligam os comportamentos aos requisitos. Testes automatizados cobrem regras, dados inválidos e recuperação, porque esses casos podem causar perda de dados ou falha na inicialização. A integração, o percurso de teclado e os avisos também foram conferidos no Chrome.
+
+Na sessão 4, `npm test` aprovou 63 testes, `npm run build` passou com a checagem TypeScript e `npm run lint` passou sem erros ou avisos. A revisão de falhas usa o armazenamento simulado da página `/tests/browser/`, disponível pelo servidor de desenvolvimento. As evidências de layout e o resultado de cada cenário ficam em `validation.md`.
 
 ## Mudanças de escopo
 

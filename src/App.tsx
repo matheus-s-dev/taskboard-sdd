@@ -40,12 +40,28 @@ export default function App() {
     setPriority("all");
   }
 
+  function focusControl(preferred: HTMLElement | null) {
+    const candidates = [
+      preferred,
+      document.getElementById("storage-recovery"),
+      addButtonRef.current,
+      document.getElementById("status-filter"),
+    ];
+    const target = candidates.find(
+      (candidate) => candidate?.isConnected && !candidate.matches(":disabled"),
+    );
+    target?.focus();
+  }
+
   function restoreFocus() {
-    requestAnimationFrame(() => {
-      const target = returnFocusRef.current;
-      if (target?.isConnected) target.focus();
-      else addButtonRef.current?.focus();
-    });
+    requestAnimationFrame(() => focusControl(returnFocusRef.current));
+  }
+
+  function clearFilters() {
+    resetFilters();
+    requestAnimationFrame(() =>
+      focusControl(document.getElementById("status-filter")),
+    );
   }
 
   function openCreate() {
@@ -72,8 +88,7 @@ export default function App() {
       setAnnouncement(`${task.title}: ${statusLabels[nextStatus]}.`);
       requestAnimationFrame(() => {
         const control = document.getElementById(`status-${task.id}`);
-        if (control) control.focus();
-        else addButtonRef.current?.focus();
+        focusControl(control);
       });
     }
   }
@@ -191,6 +206,7 @@ export default function App() {
             </p>
             {storageState === "invalid" ? (
               <button
+                id="storage-recovery"
                 className="text-button"
                 onClick={(event) => {
                   returnFocusRef.current = event.currentTarget;
@@ -202,9 +218,16 @@ export default function App() {
             ) : storageState !== "saved" ? (
               <button
                 className="text-button"
-                onClick={() => {
-                  if (retrySave())
+                onClick={(event) => {
+                  const trigger = event.currentTarget;
+                  if (retrySave()) {
                     setAnnouncement("Tarefas salvas neste navegador.");
+                    requestAnimationFrame(() =>
+                      focusControl(addButtonRef.current),
+                    );
+                  } else {
+                    requestAnimationFrame(() => focusControl(trigger));
+                  }
                 }}
               >
                 Tentar salvar novamente
@@ -254,7 +277,7 @@ export default function App() {
                 </select>
               </div>
               {filtered && (
-                <button className="text-button" onClick={resetFilters}>
+                <button className="text-button" onClick={clearFilters}>
                   Limpar filtros
                 </button>
               )}
@@ -268,7 +291,7 @@ export default function App() {
             actionsDisabled={storageState === "invalid"}
             tasks={visibleTasks}
             filtered={filtered}
-            onReset={resetFilters}
+            onReset={clearFilters}
             onEdit={(task, trigger) => {
               returnFocusRef.current = trigger;
               setEditingTask(task);

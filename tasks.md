@@ -1,6 +1,6 @@
 # Tarefas por sessão
 
-Datas sugeridas, no fuso America/Sao_Paulo. As sessões seguintes dependem da disponibilidade do autor e podem ser remarcadas.
+Datas reais das sessões, no fuso America/Sao_Paulo. O trabalho foi realizado em quatro etapas, conforme a disponibilidade do autor.
 
 ## Sessão 1 — 07/10/2026 — especificação e planejamento
 
@@ -27,14 +27,14 @@ Na sessão 2 foram conectados os filtros e a criação em memória para experime
 - [x] T08: Implementar armazenamento, restauração e tratamento de falhas. Relacionado: RF06.
 - [x] T09: Testar regras dos campos e dados armazenados inválidos. Relacionado: RF01, RF02, RF06.
 
-## Sessão 4 — sugestão: 15/10/2026 — validação e entrega
+## Sessão 4 — realizada: 13/10/2026 — validação e entrega
 
-- [ ] T10: Executar os cenários de `validation.md` e registrar evidências. Relacionado: todos os requisitos.
-- [ ] T11: Corrigir falhas encontradas e executar novamente os cenários afetados.
-- [ ] T12: Executar build e lint; registrar comandos e resultados reais.
-- [x] T13: Completar README com instalação, execução e imagens da aplicação. Antecipado e atualizado na sessão 3.
-- [ ] T14: Revisar consistência entre especificação, código e documentação.
-- [ ] T15: Preparar explicação do uso de SDD e link do repositório para apresentação.
+- [x] T10: Executar os cenários de `validation.md` e registrar evidências. Relacionado: todos os requisitos.
+- [x] T11: Corrigir falhas encontradas e executar novamente os cenários afetados.
+- [x] T12: Executar build e lint; registrar comandos e resultados reais.
+- [x] T13: Completar README com instalação, execução e imagens da aplicação. Antecipado na sessão 3 e revisado na sessão 4.
+- [x] T14: Revisar consistência entre especificação, código e documentação.
+- [x] T15: Preparar explicação do uso de SDD e link do repositório para apresentação, em `presentation.md`.
 
 ## Registro de andamento
 
